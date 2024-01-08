@@ -20,6 +20,10 @@ def checking_logs(working_directory):
     grep_cmd_list = [
         # Для просмотра сканирования портов
         '"NEW incoming connection"',
+        '"Unable to negotiate with"',
+        '"Connection closed by"',
+        '"error: kex_exchange_identification"',
+        '"banner exchange: Connection from"'
         # Для просмотра неудачных аутентификаций
         '"conversation failed"',
         # Для просмотра неудачных аутентификаций по ssh
@@ -29,7 +33,10 @@ def checking_logs(working_directory):
         output = run(f'cat {working_directory}../*.* | grep {grep_cmd}', shell=True, stdout=subprocess.PIPE, text=True).stdout
         #print(output)
 
-        if "NEW incoming connection" in grep_cmd:
+        if ("NEW incoming connection" in grep_cmd
+        or "Unable to negotiate with" in grep_cmd
+        or "Connection closed by" in grep_cmd
+        or "banner exchange: Connection from" in grep_cmd):
             file = f"{working_directory}port_scan_logs_file"
             log_entry(output, file)
 
