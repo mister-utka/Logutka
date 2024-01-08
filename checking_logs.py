@@ -24,51 +24,45 @@ def checking_logs(working_directory):
 
     grep_cmd_list = [
         # Для просмотра сканирования портов
-        '"clear_file"',
         '"NEW incoming connection"',
         '"Unable to negotiate with"',
         '"Connection closed by"',
         '"error: kex_exchange_identification"',
         '"banner exchange: Connection from"'
         # Для просмотра неудачных аутентификаций
-        '"clear_file"',
         '"conversation failed"',
         # Для просмотра неудачных аутентификаций по ssh
-        '"clear_file"',
         '"Connection closed by authenticating user"'
     ]
+
+    file_list = [
+        "port_scan_logs_file",
+        "failed_authentication_logs_file",
+        "failed_authentication_ssh_logs_file"
+    ]
+
+    for file in file_list:
+        file_clear = f"{working_directory}{file}"
+        log_entry_clear(file_clear)
+
     for grep_cmd in grep_cmd_list:
 
-        if grep_cmd != "clear_file":
-            output = run(f'cat {working_directory}../*.* | grep {grep_cmd}', shell=True, stdout=subprocess.PIPE,
-                         text=True).stdout
-            # print(output)
+        output = run(f'cat {working_directory}../*.* | grep {grep_cmd}', shell=True, stdout=subprocess.PIPE,
+                     text=True).stdout
+        # print(output)
 
         if ("NEW incoming connection" in grep_cmd
                 or "Unable to negotiate with" in grep_cmd
                 or "Connection closed by" in grep_cmd
                 or "error: kex_exchange_identification" in grep_cmd
                 or "banner exchange: Connection from" in grep_cmd):
-
             file = f"{working_directory}port_scan_logs_file"
-
-            if grep_cmd == "clear_file":
-                log_entry_clear(file)
-
             log_entry_a(output, file)
 
         if "onversation failed" in grep_cmd:
             file = f"{working_directory}failed_authentication_logs_file"
-
-            if grep_cmd == "clear_file":
-                log_entry_clear(file)
-
             log_entry_a(output, file)
 
         if "Connection closed by authenticating user" in grep_cmd:
             file = f"{working_directory}failed_authentication_ssh_logs_file"
-
-            if grep_cmd == "clear_file":
-                log_entry_clear(file)
-
             log_entry_a(output, file)
