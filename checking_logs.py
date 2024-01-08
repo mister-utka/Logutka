@@ -40,10 +40,10 @@ def checking_logs(working_directory):
             file = f"{working_directory}port_scan_logs_file"
             log_entry(output, file)
 
-        elif "onversation failed" in grep_cmd:
+        if "onversation failed" in grep_cmd:
             file = f"{working_directory}failed_authentication_logs_file"
             log_entry(output, file)
 
-        elif "Connection closed by authenticating user" in grep_cmd:
+        if "Connection closed by authenticating user" in grep_cmd:
             file = f"{working_directory}failed_authentication_ssh_logs_file"
             log_entry(output, file)
