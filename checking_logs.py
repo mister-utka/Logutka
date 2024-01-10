@@ -1,6 +1,5 @@
 import subprocess
 from subprocess import call, check_output, run
-from pprint import pprint
 
 
 def checking_logs(working_directory):
