@@ -16,5 +16,7 @@ def creating_an_instance(host):
 
 while True:
     for host in host_list:
+        print(host)
         creating_an_instance(host)
-        time.sleep(10)
+        time.sleep(1)
+    time.sleep(10)
